@@ -1,4 +1,5 @@
 import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -9,31 +10,26 @@ public class Main {
         int newTarget;
         while (true) {
             printMenu();
-            int userInput = scanner.nextInt();
-            if (userInput == 1) {
+            String userInput = scanner.next();
+            if (userInput.equals("1")) {
                 System.out.println("1.1. Введите номер месяца для учёта (1 - Янв, 2 - Фев и тд...)");
-                    month  = scanner.nextInt();
+                month = inputMonth(scanner);
                 System.out.println("1.2. Введите день от 1 до 30");
-                    day = scanner.nextInt();
+                day = inputDay(scanner);
                 System.out.println("1.3. Введите кол-во шагов");
-                while (true) {
-                    steps = scanner.nextInt();
-                    if (steps >= 0) {
-                        System.out.print("За этот день пройдено " + stepTracker.getMonth(month, day) + " шагов");
-                        stepTracker.saveMonth(month, day, steps);
-                        System.out.println(" + пройдено " + steps + " шагов, всего пройдено " + stepTracker.getMonth(month, day) + " шагов.");
-                        break;
-                    } else {
-                        System.out.println("Число не должно быть отрицательным, попробуйте ещё раз: ");
-                    }
-                }
-            } else if (userInput == 2) {
+                steps = inputSteps(scanner);
+                System.out.print("За этот день пройдено " + stepTracker.getMonth(month, day) + " шагов");
+                stepTracker.saveMonth(month, day, steps);
+                System.out.println(" + пройдено " + steps + " шагов, всего пройдено " + stepTracker.getMonth(month, day) + " шагов.");
+                continue;
+            }
+            if (userInput.equals("2")) {
                 System.out.println("Введите номер месяца за который хотите получить статистику (1 - Янв, 2 - Фев и тд...)");
-                    month  = scanner.nextInt();
+                month = inputMonth(scanner);
                 System.out.println(stepTracker.getDailySteps(month));
                 System.out.println("Общее количество шагов за месяц " + stepTracker.getStepsQuantity(month));
                 System.out.println("Максимальное пройденное количество шагов в месяце " + stepTracker.getMaxStepsQuantity(month));
-                System.out.println("Среднее количество шагов " + String.format("%.2f",stepTracker.getAverageQuantity(month)));
+                System.out.println("Среднее количество шагов " + String.format("%.2f", stepTracker.getAverageQuantity(month)));
                 System.out.println("Пройденная дистанция за месяц " + stepTracker.getDistanceKM(month) + " км.");
                 System.out.println("Количество сожжённых килокалорий за месяц " + stepTracker.getLostKCal(month) + " ккал.");
                 int QtyCheck = stepTracker.getBestSprint(month);
@@ -44,25 +40,24 @@ public class Main {
                 } else {
                     System.out.println("Вы ни разу не выполнили цель за выбранный период.");
                 }
-            } else if (userInput == 3) {
-                System.out.println("Цель по колличеству шагов в день: " + stepTracker.targetStepsQty);
+                continue;
+            }
+            if (userInput.equals("3")) {
+                System.out.println("Цель по колличеству шагов в день: " + stepTracker.getTargetStepsQty());
                 System.out.println("Введите новую цель: ");
-                while (true) {
-                    newTarget = scanner.nextInt();
-                    if (newTarget >= 0) {
-                        stepTracker.setTargetStepsQty(newTarget);
-                        System.out.println("Новая цель: " + stepTracker.targetStepsQty + " шагов");
-                        break;
-                    } else {
-                        System.out.println("Число не должно быть отрицательным, попробуйте ещё раз: ");
-                    }
-                }
-            } else if (userInput == 0) {
+                newTarget = inputSteps(scanner);
+                stepTracker.setTargetStepsQty(newTarget);
+                System.out.println("Новая цель: " + stepTracker.getTargetStepsQty() + " шагов");
+                continue;
+            }
+            if (userInput.equals("0")) {
                 System.out.println("Программа завершена");
                 break;
             } else System.out.println("Такой команды нет!");
         }
     }
+
+
     private static void printMenu() {
         System.out.println("Счётчик калорий v1.0");
         System.out.println("Что вы хотите сделать:");
@@ -70,5 +65,48 @@ public class Main {
         System.out.println("2. Напечатать статистику за определённый месяц");
         System.out.println("3. Изменить цель по количеству шагов в день");
         System.out.println("0. Выйти из приложения.");
+    }
+
+    private static int getInt(Scanner scanner) {
+        int i;
+        String strConvert;
+        while (true) {
+            strConvert = scanner.next();
+            try {
+                i = Integer.parseInt(strConvert);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Введите число");
+            }
+        }
+        return i;
+    }
+
+    private static int inputMonth(Scanner scanner) {
+        int i;
+        while (true) {
+            i = getInt(scanner);
+            if (i > 0 && i < 13) break;
+            else System.out.println("Введите номер месяца (1 - Янв, 2 - Фев и тд...)");
+        }
+        return i;
+    }
+    private static int inputDay(Scanner scanner) {
+        int i;
+        while (true) {
+            i = getInt(scanner);
+            if (i > 0 && i < 31) break;
+            else System.out.println("Введите день от 1 до 30");
+        }
+        return i;
+    }
+    private static int inputSteps(Scanner scanner) {
+        int i;
+        while (true) {
+            i = getInt(scanner);
+            if (i >= 0) break;
+            else System.out.println("Число не должно быть отрицательным, попробуйте ещё раз: ");
+        }
+        return i;
     }
 }
