@@ -6,7 +6,7 @@
 - возвращает кол-во шагов за нужный месяц и день методом getMonth
 - считает статистику
  */
-public class StepTracker {
+class StepTracker {
     MonthData[] monthToData;
     private int targetStepsQty = 10000;  // Целевое значение кол-ва шагов
     Converter converter = new Converter();
@@ -104,7 +104,7 @@ public class StepTracker {
         this.targetStepsQty = targetStepsQty;
     }
 
-    int getTargetStepsQty() {
+    int getTargetStepsQty() {  // Запрос целевого значение кол-ва шагов
         return targetStepsQty;
     }
 }

@@ -1,4 +1,4 @@
-public class MonthData {
+class MonthData {
     int[] stepsPerDay = new int[30];
 
     void setSteps(int day, int steps) {

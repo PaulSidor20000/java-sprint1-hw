@@ -1,4 +1,4 @@
-public class Converter {
+class Converter {
     double STEP = 0.75;
     double KCAL = 50;
 
